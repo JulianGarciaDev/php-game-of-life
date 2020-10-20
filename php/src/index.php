@@ -15,13 +15,16 @@ $generations = $config->generations;
 
 $universe = new Universe($rows, $columns, $density);
 
-echo PHP_EOL;
-echo 'Initial universe:'.PHP_EOL;
+$newline = '<br/>';
+if (PHP_SAPI === 'cli') $newline = PHP_EOL;
+
+echo $newline;
+echo 'Initial universe:'.$newline;
 $print_universe = new PrintUniverse($universe);
 $print_universe->print();
 
 for ($i=1; $i <= $generations; $i++) {
-    echo 'Generation #'.$i.':'.PHP_EOL;
+    echo 'Generation #'.$i.':'.$newline;
     $update_universe = new UpdateUniverse($universe);
     $universe = $update_universe->update();
     $print_universe = new PrintUniverse($universe);

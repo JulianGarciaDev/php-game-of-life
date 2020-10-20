@@ -17,12 +17,15 @@ class PrintUniverse
 
     public function print()
     {
+        $newline = '<br/>';
+        if (PHP_SAPI === 'cli') $newline = PHP_EOL;
+
         foreach ($this->universe->getGrid() as $row) {
             foreach ($row as $column) {
                 echo $column->printState();
             }
-            echo PHP_EOL;
+            echo $newline;
         }
-        echo PHP_EOL;
+        echo $newline;
     }
 }
