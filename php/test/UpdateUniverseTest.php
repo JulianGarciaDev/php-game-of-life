@@ -12,8 +12,6 @@ class UpdateUniverseTest extends TestCase
     protected $columns;
     protected $density;
     protected $universe;
-    protected $dead_cell;
-    protected $alive_cell;
 
     protected function setUp(): void
     {
@@ -21,9 +19,6 @@ class UpdateUniverseTest extends TestCase
         $this->columns = 15;
         $this->density = 4;
         $this->universe = new Universe($this->rows, $this->columns, $this->density);
-        $this->dead_cell = new Cell();
-        $this->alive_cell = new Cell();
-        $this->alive_cell->setAlive();
     }
 
     public function testUpdateUniverseTopLeft()
