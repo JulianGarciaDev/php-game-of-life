@@ -10,3 +10,9 @@ php src/index.php
 ```
 
 NOTE: Modify config.json file to change the game.
+
+Test:
+```
+composer require --dev phpunit/phpunit
+./vendor/bin/phpunit test
+```

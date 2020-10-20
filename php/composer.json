@@ -1,7 +1,9 @@
 {
     "name": "juliangdev/gameoflife",
     "description": "Game of Life",
-    "require-dev": {},
+    "require-dev": {
+        "phpunit/phpunit": "^9.4"
+    },
     "authors": [
         {
             "name": "Julián García",
