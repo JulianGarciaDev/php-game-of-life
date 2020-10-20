@@ -1,0 +1,19 @@
+{
+    "name": "juliangdev/gameoflife",
+    "description": "Game of Life",
+    "require-dev": {},
+    "authors": [
+        {
+            "name": "Julián García",
+            "email": "juliangdev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "GameOfLife\\": "src/"
+        }
+    }
+}
