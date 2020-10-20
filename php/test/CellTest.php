@@ -18,21 +18,21 @@ class CellTest extends TestCase
     public function testConstruct()
     {
         $cell = new Cell();
-        $this->assertSame(true, $cell->isDead(), 'Must be the same.');
+        $this->assertTrue($cell->isDead(), 'Must be the same.');
     }
 
     public function testSetDead()
     {
         $cell = new Cell();
         $cell->setDead();
-        $this->assertSame(true, $cell->isDead(), 'Must be the same.');
+        $this->assertTrue($cell->isDead(), 'Must be the same.');
     }
 
     public function testSetAlive()
     {
         $cell = new Cell();
         $cell->setAlive();
-        $this->assertSame(false, $cell->isDead(), 'Must be the same.');
+        $this->assertFalse($cell->isDead(), 'Must be the same.');
     }
 
     public function testPrintDead()
