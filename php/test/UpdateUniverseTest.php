@@ -66,16 +66,6 @@ class UpdateUniverseTest extends TestCase
             $is_dead = false;
         }
 
-        echo PHP_EOL;
-        echo 'GRID:';
-        echo PHP_EOL;
-        echo $this->universe->getGrid()[0][0]->printState();
-        echo $this->universe->getGrid()[0][1]->printState();
-        echo PHP_EOL;
-        echo $this->universe->getGrid()[1][0]->printState();
-        echo $this->universe->getGrid()[1][1]->printState();
-        echo PHP_EOL;
-
         $update_universe = new UpdateUniverse($this->universe);
         $new_universe = $update_universe->update();
 
