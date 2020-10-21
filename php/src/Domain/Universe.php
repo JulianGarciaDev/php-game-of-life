@@ -20,8 +20,9 @@ class Universe
         for ($i=0; $i < $this->rows; $i++) { 
             for ($j=0; $j < $this->columns; $j++) {
                 $cell = new Cell();
-                $random_number = random_int(0, $density);
-                if ($random_number == 0) $cell->setAlive();
+                // More density, more dead cells
+                $randomNumber = random_int(0, $density);
+                if ($randomNumber == 0) $cell->setAlive();
                 $this->grid[$i][$j] = $cell;
             }
         }

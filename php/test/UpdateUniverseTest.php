@@ -23,7 +23,7 @@ class UpdateUniverseTest extends TestCase
 
     public function testUpdateUniverseTopLeft()
     {
-        $is_dead = true;
+        $isDead = true;
 
         if (
             (
@@ -58,12 +58,12 @@ class UpdateUniverseTest extends TestCase
             )
         )
         {
-            $is_dead = false;
+            $isDead = false;
         }
 
-        $update_universe = new UpdateUniverse($this->universe);
-        $new_universe = $update_universe->update();
+        $updateUniverse = new UpdateUniverse($this->universe);
+        $newUniverse = $updateUniverse->update();
 
-        $this->assertSame($is_dead, $new_universe->getGrid()[0][0]->isDead(), 'Must be the same.');
+        $this->assertSame($isDead, $newUniverse->getGrid()[0][0]->isDead(), 'Must be the same.');
     }
 }

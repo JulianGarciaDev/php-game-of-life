@@ -23,25 +23,25 @@ class UpdateUniverse
         for ($i=0; $i < $this->universe->getRows(); $i++) { 
             for ($j=0; $j < $this->universe->getColumns(); $j++) {
 
-                $current_cell = $this->universe->getGrid()[$i][$j];
-                $current_cell_is_dead = $current_cell->isDead();
+                $currentCell = $this->universe->getGrid()[$i][$j];
+                $currentCellIsDead = $currentCell->isDead();
         
-                $valid_neighbours = $this->checkNeighbours($i, $j);
-                $neighbours_alive = 0;
+                $validNeighbours = $this->checkNeighbours($i, $j);
+                $neighboursAlive = 0;
 
-                foreach ($valid_neighbours as $neighbour){
-                    if (!$neighbour->isDead()) $neighbours_alive++;
+                foreach ($validNeighbours as $neighbour){
+                    if (!$neighbour->isDead()) $neighboursAlive++;
                 }
 
-                if ($current_cell_is_dead){
-                    if ($neighbours_alive == 3)
-                        $toAlive[] = $current_cell;
+                if ($currentCellIsDead){
+                    if ($neighboursAlive == 3)
+                        $toAlive[] = $currentCell;
 
                 } else { // Current cell is alive
-                    if ($neighbours_alive < 2 || $neighbours_alive > 3) {
-                        $toDead[] = $current_cell;
+                    if ($neighboursAlive < 2 || $neighboursAlive > 3) {
+                        $toDead[] = $currentCell;
                     } else {
-                        $toAlive[] = $current_cell;
+                        $toAlive[] = $currentCell;
                     }
                 }
 
@@ -62,30 +62,30 @@ class UpdateUniverse
 
     private function checkNeighbours(int $row, int $column): array
     {
-        $valid_neighbours = [];
+        $validNeighbours = [];
 
         for ($r=-1; $r <= 1; $r++) { 
             for ($c=-1; $c <= 1; $c++) { 
-                $neighbour_row = $row + $r;
-                $neighbour_column = $column + $c;
+                $neighbourRow = $row + $r;
+                $neighbourColumn = $column + $c;
 
-                $is_valid = true;
+                $isValid = true;
 
                 if (
                     ($r == 0 && $c == 0) ||
-                    ($neighbour_row < 0) || ($neighbour_column < 0) ||
-                    ($neighbour_row >= $this->universe->getRows()) ||
-                    ($neighbour_column >= $this->universe->getColumns())
+                    ($neighbourRow < 0) || ($neighbourColumn < 0) ||
+                    ($neighbourRow >= $this->universe->getRows()) ||
+                    ($neighbourColumn >= $this->universe->getColumns())
                 )
                 {
-                    $is_valid = false;
+                    $isValid = false;
                 }
 
-                if ($is_valid)
-                    $valid_neighbours[] = $this->universe->getGrid()[$neighbour_row][$neighbour_column];
+                if ($isValid)
+                    $validNeighbours[] = $this->universe->getGrid()[$neighbourRow][$neighbourColumn];
             }
         }
 
-        return $valid_neighbours;
+        return $validNeighbours;
     }
 }

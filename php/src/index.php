@@ -1,8 +1,8 @@
 <?php
 
-use GameOfLife\Domain\Universe;
-use GameOfLife\Application\PrintUniverse;
+use GameOfLife\Application\CreateUniverse;
 use GameOfLife\Application\UpdateUniverse;
+use GameOfLife\Infrastructure\PrintUniverse;
 
 include __DIR__ . "/../vendor/autoload.php";
 
@@ -17,21 +17,17 @@ if ( ($rows < 1) || ($columns < 1) || ($density < 1) || ($generations < 0) ) {
     echo 'Data error: Modify your config.json'.PHP_EOL;
 
 } else {
-    $universe = new Universe($rows, $columns, $density);
+    $createUniverse = new CreateUniverse($rows, $columns, $density);
+    $universe = $createUniverse->create();
 
-    $newline = '<br/>';
-    if (PHP_SAPI === 'cli') $newline = PHP_EOL;
-
-    echo $newline;
-    echo 'Initial universe:'.$newline;
-    $print_universe = new PrintUniverse($universe);
-    $print_universe->print();
+    $printUniverse = new PrintUniverse($universe, 0);
+    $printUniverse->print();
 
     for ($i=1; $i <= $generations; $i++) {
-        echo 'Generation #'.$i.':'.$newline;
-        $update_universe = new UpdateUniverse($universe);
-        $universe = $update_universe->update();
-        $print_universe = new PrintUniverse($universe);
-        $print_universe->print();
+        $updateUniverse = new UpdateUniverse($universe);
+        $universe = $updateUniverse->update();
+
+        $printUniverse = new PrintUniverse($universe, $i);
+        $printUniverse->print();
     }
 }
