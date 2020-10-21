@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GameOfLife\Infrastructure;
 
 use GameOfLife\Domain\Universe;
+use GameOfLife\Infrastructure\PrintCell;
 
 class PrintUniverse
 {
@@ -29,7 +30,8 @@ class PrintUniverse
 
         foreach ($this->universe->getGrid() as $row) {
             foreach ($row as $column) {
-                echo $column->printState();
+                $printCell = new PrintCell($column);
+                echo $printCell->print();
             }
             echo $this->newline;
         }

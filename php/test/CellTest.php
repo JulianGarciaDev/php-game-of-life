@@ -34,18 +34,4 @@ class CellTest extends TestCase
         $cell->setAlive();
         $this->assertFalse($cell->isDead(), 'Must be the same.');
     }
-
-    public function testPrintDead()
-    {
-        $cell = new Cell();
-        $cell->setDead();
-        $this->assertSame($this->CHAR_DEAD, $cell->printState(), 'Must be the same.');
-    }
-
-    public function testPrintAlive()
-    {
-        $cell = new Cell();
-        $cell->setAlive();
-        $this->assertSame($this->CHAR_ALIVE, $cell->printState(), 'Must be the same.');
-    }
 }

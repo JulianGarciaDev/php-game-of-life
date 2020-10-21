@@ -8,6 +8,10 @@ use GameOfLife\Domain\Universe;
 
 class UpdateUniverse
 {
+    private const MIN_NEIGHBORS_FOR_ALIVE = 2;
+    private const MAX_NEIGHBORS_FOR_ALIVE = 3;
+    private const NEIGHBORS_FOR_RESURRECTION = 3;
+
     private Universe $universe;
 
     public function __construct(Universe $universe)
@@ -26,29 +30,45 @@ class UpdateUniverse
                 $currentCell = $this->universe->getGrid()[$i][$j];
                 $currentCellIsDead = $currentCell->isDead();
         
-                $validNeighbours = $this->checkNeighbours($i, $j);
-                $neighboursAlive = 0;
+                $validNeighbors = $this->checkNeighbors($i, $j);
 
-                foreach ($validNeighbours as $neighbour){
-                    if (!$neighbour->isDead()) $neighboursAlive++;
+                $neighborsAlive = 0;
+
+                foreach ($validNeighbors as $neighbor){
+                    if (!$neighbor->isDead())
+                        $neighborsAlive++;
                 }
 
-                if ($currentCellIsDead){
-                    if ($neighboursAlive == 3)
-                        $toAlive[] = $currentCell;
+                if ($this->cellToDie($currentCellIsDead, $neighborsAlive)) {
+                    $toDead[] = $currentCell;
 
-                } else { // Current cell is alive
-                    if ($neighboursAlive < 2 || $neighboursAlive > 3) {
-                        $toDead[] = $currentCell;
-                    } else {
-                        $toAlive[] = $currentCell;
-                    }
+                } elseif ($this->cellToLive($currentCellIsDead, $neighborsAlive)) {
+                    $toAlive[] = $currentCell;
                 }
-
             }
         }
 
-        // Update cells status
+        $this->updateCells($toAlive, $toDead);
+
+        return $this->universe;
+    }
+
+    private function cellToDie(bool $cellIsDead, int $neighborsAlive): bool
+    {
+        return (!$cellIsDead && 
+                ($neighborsAlive < self::MIN_NEIGHBORS_FOR_ALIVE || $neighborsAlive > self::MAX_NEIGHBORS_FOR_ALIVE)
+            );
+    }
+
+    private function cellToLive(bool $cellIsDead, int $neighborsAlive): bool
+    {
+        return ($cellIsDead && 
+                ($neighborsAlive == self::NEIGHBORS_FOR_RESURRECTION)
+            );
+    }
+
+    private function updateCells(array $toAlive, array $toDead): void
+    {
         foreach ($toAlive as $cell){
             $cell->setAlive();
         }
@@ -56,36 +76,68 @@ class UpdateUniverse
         foreach ($toDead as $cell){
             $cell->setDead();
         }
-
-        return $this->universe;
     }
 
-    private function checkNeighbours(int $row, int $column): array
+    private function checkNeighbors(int $row, int $column): array
     {
-        $validNeighbours = [];
+        $validNeighbors = [];
 
-        for ($r=-1; $r <= 1; $r++) { 
-            for ($c=-1; $c <= 1; $c++) { 
-                $neighbourRow = $row + $r;
-                $neighbourColumn = $column + $c;
+        for ($rowOffset=-1; $rowOffset <= 1; $rowOffset++) { 
+            for ($columnOffset=-1; $columnOffset <= 1; $columnOffset++) {
+
+                $neighborRow = $row + $rowOffset;
+                $neighborColumn = $column + $columnOffset;
 
                 $isValid = true;
 
                 if (
-                    ($r == 0 && $c == 0) ||
-                    ($neighbourRow < 0) || ($neighbourColumn < 0) ||
-                    ($neighbourRow >= $this->universe->getRows()) ||
-                    ($neighbourColumn >= $this->universe->getColumns())
+                    $this->neighborIsCurrentCell($rowOffset, $columnOffset) ||
+                    $this->neighborOutUniverse($neighborRow, $neighborColumn)
                 )
                 {
                     $isValid = false;
                 }
 
                 if ($isValid)
-                    $validNeighbours[] = $this->universe->getGrid()[$neighbourRow][$neighbourColumn];
+                    $validNeighbors[] = $this->universe->getGrid()[$neighborRow][$neighborColumn];
             }
         }
 
-        return $validNeighbours;
+        return $validNeighbors;
+    }
+
+    private function neighborIsCurrentCell(int $row, int $column): bool
+    {
+        return ($row == 0 && $column == 0);
+    }
+
+    private function neighborOutUniverse(int $neighborRow, int $neighborColumn): bool
+    {
+        return (
+            $this->neighborOutUniverseLeft($neighborRow) ||
+            $this->neighborOutUniverseTop($neighborColumn) ||
+            $this->neighborOutUniverseRight($neighborRow) ||
+            $this->neighborOutUniverseBottom($neighborColumn)
+        );
+    }
+
+    private function neighborOutUniverseLeft(int $neighborRow): bool
+    {
+        return ($neighborRow < 0);
+    }
+
+    private function neighborOutUniverseTop(int $neighborColumn): bool
+    {
+        return ($neighborColumn < 0);
+    }
+
+    private function neighborOutUniverseRight(int $neighborRow): bool
+    {
+        return ($neighborRow >= $this->universe->getRows());
+    }
+
+    private function neighborOutUniverseBottom(int $neighborColumn): bool
+    {
+        return ($neighborColumn >= $this->universe->getColumns());
     }
 }

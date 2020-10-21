@@ -40,11 +40,4 @@ class Cell
         return ($this->getState() == self::STATE_DEAD);
     }
 
-    public function printState(): string
-    {
-        $char = 'X';
-        if ($this->isDead()) $char = '_';
-        return $char;
-    }
-
 }

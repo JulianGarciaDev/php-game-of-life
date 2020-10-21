@@ -10,27 +10,20 @@ class Universe
 {
     private int $rows;
     private int $columns;
+    private int $density;
     private array $grid;
 
     public function __construct(int $rows, int $columns, int $density)
     {
         $this->rows = $rows;
         $this->columns = $columns;
+        $this->density = $density;
 
         for ($i=0; $i < $this->rows; $i++) { 
             for ($j=0; $j < $this->columns; $j++) {
-                $cell = new Cell();
-                // More density, more dead cells
-                $randomNumber = random_int(0, $density);
-                if ($randomNumber == 0) $cell->setAlive();
-                $this->grid[$i][$j] = $cell;
+                $this->grid[$i][$j] = new Cell();
             }
         }
-    }
-
-    public function getGrid(): array
-    {
-        return $this->grid;
     }
 
     public function getRows(): int
@@ -43,4 +36,13 @@ class Universe
         return $this->columns;
     }
 
+    public function getDensity(): int
+    {
+        return $this->density;
+    }
+
+    public function getGrid(): array
+    {
+        return $this->grid;
+    }
 }
