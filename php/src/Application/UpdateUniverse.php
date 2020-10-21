@@ -88,22 +88,20 @@ class UpdateUniverse
                 $neighborRow = $row + $rowOffset;
                 $neighborColumn = $column + $columnOffset;
 
-                $isValid = true;
-
-                if (
-                    $this->neighborIsCurrentCell($rowOffset, $columnOffset) ||
-                    $this->neighborOutUniverse($neighborRow, $neighborColumn)
-                )
-                {
-                    $isValid = false;
-                }
-
-                if ($isValid)
+                if ($this->neighborIsValid($rowOffset, $columnOffset, $neighborRow, $neighborColumn))
                     $validNeighbors[] = $this->universe->getGrid()[$neighborRow][$neighborColumn];
             }
         }
 
         return $validNeighbors;
+    }
+
+    private function neighborIsValid(int $rowOffset, int $columnOffset, int $neighborRow, int $neighborColumn): bool
+    {
+        return !(
+            $this->neighborIsCurrentCell($rowOffset, $columnOffset) ||
+            $this->neighborOutUniverse($neighborRow, $neighborColumn)
+        );
     }
 
     private function neighborIsCurrentCell(int $row, int $column): bool
