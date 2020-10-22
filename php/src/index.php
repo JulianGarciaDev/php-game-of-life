@@ -17,17 +17,21 @@ if ( ($rows < 1) || ($columns < 1) || ($density < 1) || ($generations < 0) ) {
     echo 'Data error: Modify your config.json'.PHP_EOL;
 
 } else {
-    $createUniverse = new CreateUniverse($rows, $columns, $density);
-    $universe = $createUniverse->create();
+    try {
+        $createUniverse = new CreateUniverse($rows, $columns, $density);
+        $universe = $createUniverse->create();
 
-    $printUniverse = new PrintUniverse($universe, 0);
-    $printUniverse->print();
-
-    for ($i=1; $i <= $generations; $i++) {
-        $updateUniverse = new UpdateUniverse($universe);
-        $universe = $updateUniverse->update();
-
-        $printUniverse = new PrintUniverse($universe, $i);
+        $printUniverse = new PrintUniverse($universe, 0);
         $printUniverse->print();
+
+        for ($i=1; $i <= $generations; $i++) {
+            $updateUniverse = new UpdateUniverse($universe);
+            $universe = $updateUniverse->update();
+
+            $printUniverse = new PrintUniverse($universe, $i);
+            $printUniverse->print();
+        }
+    } catch (Exception $exception) {
+        echo PHP_EOL . $exception->getMessage() . PHP_EOL;
     }
 }
