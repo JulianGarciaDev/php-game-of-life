@@ -2,7 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 
-use GameOfLife\Domain\Cell;
 use GameOfLife\Domain\Universe;
 use GameOfLife\Application\UpdateUniverse;
 
