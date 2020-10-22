@@ -17,9 +17,16 @@ class UniverseTest extends TestCase
         $this->density = 4;
     }
 
-    public function testConstructor()
+    public function testConstructorCellsDead()
     {
         $universe = new Universe($this->rows, $this->columns, $this->density);
+        
+        for ($i=0; $i < $this->rows; $i++) { 
+            for ($j=0; $j < $this->columns; $j++) {
+                $this->assertTrue($universe->getGrid()[$i][$j]->isDead(), 'Must be the same.');
+            }
+        }
+
         $this->assertSame($this->rows, count($universe->getGrid()), 'Must be the same.');
         $this->assertSame($this->columns, count($universe->getGrid()[0]), 'Must be the same.');
     }
@@ -34,5 +41,11 @@ class UniverseTest extends TestCase
     {
         $universe = new Universe($this->rows, $this->columns, $this->density);
         $this->assertSame($this->columns, $universe->getColumns(), 'Must be the same.');
+    }
+
+    public function testGetDensity()
+    {
+        $universe = new Universe($this->rows, $this->columns, $this->density);
+        $this->assertSame($this->density, $universe->getDensity(), 'Must be the same.');
     }
 }

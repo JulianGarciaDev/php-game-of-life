@@ -32,12 +32,7 @@ class UpdateUniverse
         
                 $validNeighbors = $this->checkNeighbors($i, $j);
 
-                $neighborsAlive = 0;
-
-                foreach ($validNeighbors as $neighbor){
-                    if (!$neighbor->isDead())
-                        $neighborsAlive++;
-                }
+                $neighborsAlive = $this->countNeighborsAlive($validNeighbors);
 
                 if ($this->cellToDie($currentCellIsDead, $neighborsAlive)) {
                     $toDead[] = $currentCell;
@@ -51,6 +46,18 @@ class UpdateUniverse
         $this->updateCells($toAlive, $toDead);
 
         return $this->universe;
+    }
+
+    private function countNeighborsAlive(array $validNeighbors): int
+    {
+        $neighborsAlive = 0;
+
+        foreach ($validNeighbors as $neighbor){
+            if (!$neighbor->isDead())
+                $neighborsAlive++;
+        }
+
+        return $neighborsAlive;
     }
 
     private function cellToDie(bool $cellIsDead, int $neighborsAlive): bool
